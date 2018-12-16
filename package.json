@@ -1,7 +1,7 @@
 {
-  "name": "module-template",
+  "name": "react-tetris-overlay",
   "version": "1.0.0",
-  "description": "A template project for creating npm modules",
+  "description": "A React component that renders a tetris game.",
   "main": "build/index.js",
   "peerDependencies": {
     "react": ">=16.0.1",
@@ -12,7 +12,7 @@
     "prepublish": "rm -rf ./build && npm run build",
     "build": "webpack --config webpack.prod.js",
     "start": "webpack-dev-server --config webpack.dev.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "keywords": [],
   "author": {
@@ -31,6 +31,8 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "file-loader": "^2.0.0",
+    "jest": "^23.6.0",
+    "prop-types": "^15.6.2",
     "react": ">=16.0.1",
     "react-dom": ">=16.0.1",
     "styled-components": "^4.1.2",
