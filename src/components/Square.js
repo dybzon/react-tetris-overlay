@@ -1,9 +1,16 @@
 import styled from 'styled-components'
 import React from 'react'
+import { SizeContext } from './GameEngine'
 
 export class Square extends React.PureComponent {
   render() {
-    return <SquareContainer {...this.props} />
+    return (
+      <SizeContext.Consumer>
+        {context => (
+          <SquareContainer {...this.props} pixelSize={context.pixelSize} />
+        )}
+      </SizeContext.Consumer>
+    )
   }
 }
 
@@ -16,6 +23,7 @@ const SquareContainer = styled.div.attrs(props => ({
     backgroundRepeat: 'no-repeat',
     backgroundPosition: 'center',
     backgroundColor: props.color,
+    clipPath: `inset(0px 0px 0px 0px)`,
   },
 }))`
   transition: bottom 0.5s linear;

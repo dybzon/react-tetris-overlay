@@ -2,25 +2,40 @@ import React from 'react'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { appConstants } from '../utilities'
+import { SizeContext, GameContext } from './GameEngine'
 
 export class Shape extends React.PureComponent {
   render() {
-    const { template, orientation, pixelSize, x, y, color } = this.props
-    const squares = template[orientation]
     return (
-      <ShapeContainer pixelSize={pixelSize} y={y} x={x}>
-        <InnerContainer>
-          {squares.map((sq, i) => (
-            <Square
-              key={i}
-              pixelSize={pixelSize}
-              y={sq.y}
-              x={sq.x}
-              color={color}
-            />
-          ))}
-        </InnerContainer>
-      </ShapeContainer>
+      <SizeContext.Consumer>
+        {sizeContext => (
+          <GameContext.Consumer>
+            {gameContext => {
+              const { shape } = gameContext
+              if (!shape) return ''
+
+              const { template, orientation, x, y, color } = shape
+              const { pixelSize } = sizeContext
+              const squares = template[orientation]
+              return (
+                <ShapeContainer pixelSize={pixelSize} y={y} x={x}>
+                  <InnerContainer>
+                    {squares.map((sq, i) => (
+                      <Square
+                        key={i}
+                        y={sq.y}
+                        x={sq.x}
+                        color={color}
+                        pixelSize={pixelSize}
+                      />
+                    ))}
+                  </InnerContainer>
+                </ShapeContainer>
+              )
+            }}
+          </GameContext.Consumer>
+        )}
+      </SizeContext.Consumer>
     )
   }
 }

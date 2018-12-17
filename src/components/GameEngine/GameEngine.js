@@ -32,7 +32,6 @@ export class GameEngine extends Component {
     this.state = {
       ...defaultState,
       shape: getShape(0),
-      ...this.getGameSize(),
     }
   }
 
@@ -78,13 +77,11 @@ export class GameEngine extends Component {
   componentDidMount() {
     this.interval = setInterval(this.advanceGame, 500)
     document.addEventListener('keydown', this.handleKeydown)
-    window.addEventListener('resize', this.handleResize)
   }
 
   componentWillUnmount() {
     clearInterval(this.interval)
     document.removeEventListener('keydown', this.handleKeydown)
-    window.removeEventListener('resize', this.handleResize)
   }
 
   render() {
@@ -122,8 +119,6 @@ export class GameEngine extends Component {
     const handler = this.actionHandlers.find(a => a.key === e.keyCode)
     if (handler && handler.action) handler.action()
   }
-
-  handleResize = () => this.setState({ ...this.getGameSize() })
 
   // Use this instead of moveLeft, moveRight, moveDown
   move = (direction, xDiff, yDiff) => {
@@ -181,19 +176,6 @@ export class GameEngine extends Component {
     const shape = this.state.shape
     shape.orientation = getOrientationAfterTurn(direction, shape.orientation)
     this.setState({ shape })
-  }
-
-  getGameSize = () => {
-    const defaultWidth =
-      appConstants.defaultPixelSize * appConstants.gameWidthInPixels
-    const gameWidth =
-      window.innerWidth < defaultWidth
-        ? Math.floor(window.innerWidth / appConstants.gameWidthInPixels) *
-          appConstants.gameWidthInPixels
-        : defaultWidth
-    const pixelSize = gameWidth / appConstants.gameWidthInPixels
-    const gameHeight = pixelSize * appConstants.gameHeightInPixels
-    return { gameWidth, pixelSize, gameHeight }
   }
 
   spawnShape = () => {

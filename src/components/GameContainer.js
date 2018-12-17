@@ -1,63 +1,32 @@
 import React from 'react'
 import styled from 'styled-components'
-import { GameEngine, GameContext } from './GameEngine'
+import { GameEngine, SizeContext, SizeContextProvider } from './GameEngine'
 import { Shape } from './Shape'
-import { Square } from './Square'
+import { Squares } from './Squares'
 import { GameDetails } from './GameDetails'
 
 export class GameContainer extends React.PureComponent {
   render() {
     return (
       <GameEngine {...this.props}>
-        <GameContext.Consumer>
-          {context => {
-            const {
-              score,
-              rowsCleared,
-              gameOver,
-              gameDetailsDisplay,
-              onRestartGame,
-              onQuit,
-              gamePaused,
-              pixelSize,
-              shape,
-              squares,
-              gameWidth,
-              gameHeight,
-            } = context
-            return (
-              <React.Fragment>
-                <GameDetails
-                  score={score}
-                  rowsCleared={rowsCleared}
-                  gameOver={gameOver}
-                  gameDetailsDisplay={gameDetailsDisplay}
-                  onRestartGame={onRestartGame}
-                  onQuit={onQuit}
-                  paused={gamePaused}
-                />
-                <Container height={gameHeight} width={gameWidth}>
-                  <InnerContainer>
-                    {shape && (
-                      <Shape pixelSize={pixelSize} key={shape.id} {...shape} />
-                    )}
-                    <React.Fragment>
-                      {squares &&
-                        squares.map(s => (
-                          <Square
-                            key={s.id}
-                            {...s}
-                            pixelSize={pixelSize}
-                            image={this.props.squareImage}
-                          />
-                        ))}
-                    </React.Fragment>
-                  </InnerContainer>
-                </Container>
-              </React.Fragment>
-            )
-          }}
-        </GameContext.Consumer>
+        <SizeContextProvider>
+          <SizeContext.Consumer>
+            {context => {
+              const { gameWidth, gameHeight } = context
+              return (
+                <React.Fragment>
+                  <GameDetails />
+                  <Container height={gameHeight} width={gameWidth}>
+                    <InnerContainer>
+                      <Shape />
+                      <Squares image={this.props.squareImage} />
+                    </InnerContainer>
+                  </Container>
+                </React.Fragment>
+              )
+            }}
+          </SizeContext.Consumer>
+        </SizeContextProvider>
       </GameEngine>
     )
   }

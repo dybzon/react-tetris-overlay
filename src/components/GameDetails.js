@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { appConstants } from '../utilities'
 import { Button } from './Button'
 import { FoldableContainer } from './FoldableContainer'
+import { GameContext } from './GameEngine'
 
 export class GameDetails extends React.Component {
   constructor(props) {
@@ -62,46 +63,57 @@ export class GameDetails extends React.Component {
   }
 
   render() {
-    const {
-      paused,
-      score,
-      rowsCleared,
-      gameDetailsDisplay,
-      onRestartGame,
-      onQuit,
-      gameOver,
-    } = this.props
     const variableStyles = {
       top: `${this.state.position.y}px`,
       left: `${this.state.position.x}px`,
     }
 
     return (
-      <GameDetailsContainer
-        {...variableStyles}
-        onMouseDown={this.handleMouseDown}>
-        {gameOver && <GameDetailsItem>GAME OVER!</GameDetailsItem>}
-        {gameOver && <Button onClick={onRestartGame}>Restart game</Button>}
-        {gameDetailsDisplay.score && (
-          <GameDetailsItem>Score: {score}</GameDetailsItem>
-        )}
-        {gameDetailsDisplay.rowsCleared && (
-          <GameDetailsItem>Rows cleared: {rowsCleared}</GameDetailsItem>
-        )}
-        {gameDetailsDisplay.quit && <Button onClick={onQuit}>Quit game</Button>}
-        {gameDetailsDisplay.controls && (
-          <GameDetailsItem>
-            <FoldableContainer header={'Controls'}>
-              <div>a: left</div>
-              <div>d: right</div>
-              <div>s: down</div>
-              <div>w: turn clockwise</div>
-              <div>space: pause</div>
-            </FoldableContainer>
-          </GameDetailsItem>
-        )}
-        {paused && <GameDetailsItem>Game paused</GameDetailsItem>}
-      </GameDetailsContainer>
+      <GameContext.Consumer>
+        {context => {
+          const {
+            gamePaused,
+            score,
+            rowsCleared,
+            gameDetailsDisplay,
+            onRestartGame,
+            onQuit,
+            gameOver,
+          } = context
+
+          return (
+            <GameDetailsContainer
+              {...variableStyles}
+              onMouseDown={this.handleMouseDown}>
+              {gameOver && <GameDetailsItem>GAME OVER!</GameDetailsItem>}
+              {gameOver && (
+                <Button onClick={onRestartGame}>Restart game</Button>
+              )}
+              {gameDetailsDisplay.score && (
+                <GameDetailsItem>Score: {score}</GameDetailsItem>
+              )}
+              {gameDetailsDisplay.rowsCleared && (
+                <GameDetailsItem>Rows cleared: {rowsCleared}</GameDetailsItem>
+              )}
+              {gameDetailsDisplay.quit && (
+                <Button onClick={onQuit}>Quit game</Button>
+              )}
+              {gameDetailsDisplay.controls && (
+                <GameDetailsItem>
+                  <FoldableContainer header={'Controls'}>
+                    <div>a: left</div>
+                    <div>d: right</div>
+                    <div>s: down</div>
+                    <div>w: turn clockwise</div>
+                    <div>space: pause</div>
+                  </FoldableContainer>
+                </GameDetailsItem>
+              )}
+              {gamePaused && <GameDetailsItem>Game paused</GameDetailsItem>}
+            </GameDetailsContainer>
+          )
+        }}
+      </GameContext.Consumer>
     )
   }
 }
