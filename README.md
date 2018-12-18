@@ -27,9 +27,25 @@ render() {
 }
 ```
 
+## Customization
+
+The `<Tetris />` component takes two optional props with the following default values:
+
+```
+gameDetailsDisplay = {
+  score: true, // Determines whether the score is displayed
+  rowsCleared: true, // Determines whether the number of rows cleared is displayed
+  quit: true, // Determines whether the quit button is displayed
+  controls: true, // Determines whether game controls are displayed
+}
+onQuit = undefined // Callback function to handle the event that is fired when the quit button is clicked
+squareImage = undefined // An image to be displayed on the squares that have "landed" on the game board. The optimal resolution for this image is 720 h x 400 w
+```
+
 ## Game controls
 
 a: left
 s: down
 d: right
 w: turn clockwise
+space: pause game
