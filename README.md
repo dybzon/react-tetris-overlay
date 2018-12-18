@@ -29,7 +29,7 @@ render() {
 
 ## Customization
 
-The `<Tetris />` component takes two optional props with the following default values:
+The `<Tetris />` component takes a few optional props with the following default values:
 
 ```
 gameDetailsDisplay = {
