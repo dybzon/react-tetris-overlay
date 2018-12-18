@@ -6,9 +6,7 @@ export class Square extends React.PureComponent {
   render() {
     return (
       <SizeContext.Consumer>
-        {context => (
-          <SquareContainer {...this.props} pixelSize={context.pixelSize} />
-        )}
+        {context => <SquareContainer {...this.props} {...context} />}
       </SizeContext.Consumer>
     )
   }
@@ -19,16 +17,17 @@ const SquareContainer = styled.div.attrs(props => ({
     left: `${props.x * props.pixelSize}px`,
     bottom: `${props.y * props.pixelSize}px`,
     backgroundImage: props.image ? `url(${props.image})` : 'none',
-    backgroundSize: 'contain',
+    backgroundSize: `${props.gameWidth}px ${props.gameHeight}px`,
     backgroundRepeat: 'no-repeat',
-    backgroundPosition: 'center',
+    backgroundPosition: `${-props.x * props.pixelSize}px ${-props.gameHeight +
+      props.y * props.pixelSize}px `,
     backgroundColor: props.color,
-    clipPath: `inset(0px 0px 0px 0px)`,
   },
 }))`
   transition: bottom 0.5s linear;
   width: ${props => props.pixelSize}px;
   height: ${props => props.pixelSize}px;
+  overflow: hidden;
 
   position: absolute;
 `
